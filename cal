@@ -1,0 +1,41 @@
+#!/bin/sh
+set -f # disable globbing to prevent issues with *
+pshfrPATH="${pshfrPATH:-$PWD/math}" # path to use for psh-fractional
+# should be a full path; eg /home/...
+stack=""; in="$@" # `set --` will be used
+# $stack will be redefined
+# top 2 items are then used with $op
+# leaving the result in $stack for later
+IFS=" "; for i in ${in}; do
+ 
+  if [ -z "${i##*.*}" ] || printf %d "$i" >/dev/null 2>/dev/null ;then
+    stack="$i${stack:+ $stack}"
+    # stack is prepended to make the loop logic simpler
+    # however parsing will be reversed
+  else
+    echo "$i -- $stack"
+    # $i is operation -- no need to define
+    n=1; for p in ${stack}; do
+      c="$p${c:+ $c}" # reverse ? 
+      #echo "$c | $stack"
+      [ "$n" -eq 2 ] && {
+        set -- ${c}; stack="${stack#$2 $1}"
+        case "$i" in
+          '+') pshfrOP="${pshfrPATH}/addition/add";;
+          '-') pshfrOP="${pshfrPATH}/subtraction/sub";;
+          '*') pshfrOP="${pshfrPATH}/multiplication/mul";;
+          '/') pshfrOP="${pshfrPATH}/division/div"
+        esac
+        stack="$(${pshfrOP} $1 $2) ${stack}" 
+        echo "$stack"
+        break # stop as $stack has been redefined
+      } || : $((n+=1))
+    done
+  fi
+done # following other calculators -- spaces matter
+# error handling
+#set -- ${stack}; [ "$#" -ne 1 ] && {
+#  echo 'Incomplete expression...'
+#  exit 1
+#}
+echo "$stack"

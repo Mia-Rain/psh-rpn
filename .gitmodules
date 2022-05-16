@@ -1,0 +1,4 @@
+[submodule "math"]
+	path = math
+	url = https://dicksdeathabove.xyz/~mia/psh-fractional
+	branch = master
