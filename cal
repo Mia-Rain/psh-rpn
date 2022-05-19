@@ -7,13 +7,12 @@ stack=""; in="$@" # `set --` will be used
 # top 2 items are then used with $op
 # leaving the result in $stack for later
 IFS=" "; for i in ${in}; do
- 
   if [ -z "${i##*.*}" ] || printf %d "$i" >/dev/null 2>/dev/null ;then
     stack="$i${stack:+ $stack}"
     # stack is prepended to make the loop logic simpler
     # however parsing will be reversed
   else
-    echo "$i -- $stack"
+    #echo "$i -- $stack"
     # $i is operation -- no need to define
     n=1; for p in ${stack}; do
       c="$p${c:+ $c}" # reverse ? 
@@ -27,7 +26,7 @@ IFS=" "; for i in ${in}; do
           '/') pshfrOP="${pshfrPATH}/division/div"
         esac
         stack="$(${pshfrOP} $1 $2) ${stack}" 
-        echo "$stack"
+        #echo "$stack"
         break # stop as $stack has been redefined
       } || : $((n+=1))
     done
