@@ -4,8 +4,13 @@ psh-rpn+
 ---- successor to postsh
 ---
 Caveats
--- psh-fractional is still WIP
--- most functions work >70% of the time
--- but errors are still possible and are likely
--- additionally remember that sh has a max number of 2^(63-1)
+-- auto variable replacement
+---- in sh $(()) can auto replace variables without needing a $
+---- I've implemented this in rpn+ too however
+---- variable discovery works fine unless executed within fish shell
+-- psh-fractional
+---- psh-fractional is still WIP
+---- most functions work >70% of the time
+---- but errors are still possible and are likely
+---- additionally remember that sh has a max number of 2^(63-1)
 ---
