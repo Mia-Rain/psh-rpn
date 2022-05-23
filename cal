@@ -7,7 +7,7 @@ stack=""; in="$@" # `set --` will be used
 # top 2 items are then used with $op
 # leaving the result in $stack for later
 IFS=" "; for i in ${in}; do
-  if [ -z "${i##*.*}" ] || printf %d "$i" >/dev/null 2>/dev/null ;then
+  if [ -z "${i##*.*}" ] || printf %d "$i" >/dev/null 2>&1 ;then
     stack="$i${stack:+ $stack}"
     # stack is prepended to make the loop logic simpler
     # however parsing will be reversed
@@ -33,8 +33,11 @@ IFS=" "; for i in ${in}; do
   fi
 done # following other calculators -- spaces matter
 # error handling
-#set -- ${stack}; [ "$#" -ne 1 ] && {
-#  echo 'Incomplete expression...'
-#  exit 1
-#}
-echo "$stack"
+set -- ${stack}; [ "$#" -ne 1 ] && {
+  echo 'Incomplete expression...'
+  exit 1
+}
+stack="${stack% }"; case "$stack" in
+  *'.0') stack="${stack%.0}"
+esac
+echo "${stack% }"
