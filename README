@@ -7,5 +7,5 @@ Caveats
 -- psh-fractional is still WIP
 -- most functions work >70% of the time
 -- but errors are still possible and are likely
--- additionally remember that sh has a max number of 2^(63-1)
+-- additionally remember that sh has a max number of (2^63)-1
 ---
