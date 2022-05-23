@@ -11,11 +11,8 @@ IFS=" "; for i in ${in}; do
     stack="$i${stack:+ $stack}"
     # stack is prepended to make the loop logic simpler
     # however parsing will be reversed
-  elif (eval i=\${$i}) 2>/dev/null; then # if doesn't error and is not integer
-    eval i=\${$i}; if [ -z "${i##*.*}" ] || printf %d "$i" >/dev/null 2>/dev/null ;then
-      stack="$i${stack:+ $stack}" 
-    fi
   else
+    #echo "$i -- $stack"
     # $i is operation -- no need to define
     n=1; for p in ${stack}; do
       c="$p${c:+ $c}" # reverse ? 
